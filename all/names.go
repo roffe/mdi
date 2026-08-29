@@ -1,11 +1,13 @@
 package all
 
-import (
-	"maps"
-	"slices"
-)
+import "sort"
 
 // Names returns the sorted names of all icons.
 func Names() []string {
-	return slices.Sorted(maps.Keys(Icons))
+	names := make([]string, 0, len(Icons))
+	for name := range Icons {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
 }

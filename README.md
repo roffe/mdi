@@ -4,7 +4,8 @@
 
 Every icon is its own function backed by its own `//go:embed` variable, so the
 linker dead-code-eliminates the icons you don't call — your binary only
-contains the SVGs you actually use.
+contains the SVGs you actually use. Icons are themed: they follow the Fyne
+theme's foreground color.
 
 ```sh
 go get github.com/roffe/mdi
@@ -17,7 +18,6 @@ package main
 
 import (
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
 	"github.com/roffe/mdi"
@@ -27,26 +27,22 @@ func main() {
 	a := app.New()
 	w := a.NewWindow("mdi demo")
 
-	save := theme.NewThemedResource(mdi.IconContentSave()) // follows the theme's foreground color
-	w.SetContent(widget.NewButtonWithIcon("Save", save, func() {}))
+	w.SetContent(widget.NewButtonWithIcon("Save", mdi.IconContentSave(), func() {}))
 	w.ShowAndRun()
 }
 ```
 
-Each icon function returns the raw SVG resource (black fill); wrap it in
-`theme.NewThemedResource` to have it follow the theme.
-
 ```go
 // Toolbar
 toolbar := widget.NewToolbar(
-	widget.NewToolbarAction(theme.NewThemedResource(mdi.IconPlus()), addFunc),
-	widget.NewToolbarAction(theme.NewThemedResource(mdi.IconDelete()), deleteFunc),
+	widget.NewToolbarAction(mdi.IconPlus(), addFunc),
+	widget.NewToolbarAction(mdi.IconDelete(), deleteFunc),
 	widget.NewToolbarSeparator(),
-	widget.NewToolbarAction(theme.NewThemedResource(mdi.IconCog()), settingsFunc),
+	widget.NewToolbarAction(mdi.IconCog(), settingsFunc),
 )
 
 // Plain icon widget
-icon := widget.NewIcon(theme.NewThemedResource(mdi.IconHome()))
+icon := widget.NewIcon(mdi.IconHome())
 ```
 
 ## All icons / lookup by name

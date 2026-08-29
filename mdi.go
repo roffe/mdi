@@ -3,16 +3,18 @@
 //
 // Each icon is its own function backed by its own //go:embed variable
 // (generated in icons.go), so the linker only includes the icons you
-// actually call — e.g. mdi.IconContentSave(). Wrap the result in
-// theme.NewThemedResource to have it follow the Fyne theme's foreground
-// color. Import github.com/roffe/mdi/all when you need lookup by name;
-// it pins every icon into the binary.
+// actually call — e.g. mdi.IconContentSave(). Icons are themed: they
+// follow the Fyne theme's foreground color. Import github.com/roffe/mdi/all
+// when you need lookup by name; it pins every icon into the binary.
 package mdi
 
-import "fyne.io/fyne/v2"
+import (
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/theme"
+)
 
 //go:generate go run gen.go
 
 func res(name string, content []byte) fyne.Resource {
-	return &fyne.StaticResource{StaticName: name, StaticContent: content}
+	return theme.NewThemedResource(&fyne.StaticResource{StaticName: name, StaticContent: content})
 }
