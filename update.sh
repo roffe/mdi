@@ -23,6 +23,6 @@ cp "$tmp/package/LICENSE" LICENSE
 echo "$latest" >VERSION
 sed -i "s/(v[0-9.]*,/(v$latest,/" mdi.go
 
-go run gen.go
+go run gen.go # regenerates icons.go and all/all.go
 echo "updated $current -> $latest"
 go test ./...

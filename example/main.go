@@ -7,19 +7,20 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
-	"github.com/roffe/mdi"
+	"github.com/roffe/mdi/all"
 )
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("MDI icon picker")
 
-	all := mdi.Names()
-	filtered := all
+	names := all.Names()
+	filtered := names
 
-	status := widget.NewLabel(fmt.Sprintf("%d icons — click one to copy its name", len(all)))
+	status := widget.NewLabel(fmt.Sprintf("%d icons — click one to copy its name", len(names)))
 
 	var grid *widget.GridWrap
 	grid = widget.NewGridWrap(
@@ -36,7 +37,7 @@ func main() {
 			name := filtered[id]
 			box := o.(*fyne.Container)
 			icon := box.Objects[0].(*fyne.Container).Objects[0].(*fyne.Container).Objects[0].(*widget.Icon)
-			icon.SetResource(mdi.ThemedIcon(mdi.IconName(name)))
+			icon.SetResource(theme.NewThemedResource(all.Icons[name]()))
 			box.Objects[1].(*widget.Label).SetText(name)
 		},
 	)
@@ -52,10 +53,10 @@ func main() {
 	search.OnChanged = func(q string) {
 		q = strings.ToLower(strings.TrimSpace(q))
 		if q == "" {
-			filtered = all
+			filtered = names
 		} else {
 			filtered = filtered[:0:0]
-			for _, name := range all {
+			for _, name := range names {
 				if strings.Contains(name, q) {
 					filtered = append(filtered, name)
 				}
